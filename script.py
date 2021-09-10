@@ -7,10 +7,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Authenticate to Twitter
-api_token = os.getenv['api_token']
-api_secret = os.getenv['api_secret']
-access_token = os.getenv['access_token']
-access_secret = os.getenv['access_secret']
+api_token = os.getenv('api_token')
+api_secret = os.getenv('api_secret')
+access_token = os.getenv('access_token')
+access_secret = os.getenv('access_secret')
 
 auth = tweepy.OAuthHandler(api_token, api_secret)
 auth.set_access_token(access_token, access_secret)
@@ -28,11 +28,14 @@ reddit = praw.Reddit(
     user_agent = "<CrosspostBot1.0>"
 )
 
-subreddit = reddit.subreddit('ethtrader')
+# subreddit = reddit.subreddit('ethtrader')
+# keywords = '[governance poll]', '[poll proposal]'
 destination = 'u_DonutGovernanceBot'
 prevPost = []
-keywords = '[governance poll]', '[poll proposal]'
 
+# Debug
+subreddit = reddit.subreddit('all')
+keywords = 'dog', 'friend'
 
 def clean_string(raw_string):
     cleaned_string = raw_string.lower()
