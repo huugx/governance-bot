@@ -64,8 +64,8 @@ class RedditBot:
         if keywords[0] in clean_string(submission.title):
           date = datetime.datetime.utcnow()
           supply = coin.coinHistory()
-          print("[Total Donut Supply](https://www.coingecko.com/en/coins/donut) on " + date.strftime("%Y %b %d at %H:%M") + " UTC was " + str(supply) + "\n" + "\n" + "*I am a bot, and this was performed automatically as a record of the total donut supply at governance polls.*")
-          # submission.reply("[Total Donut Supply](https://www.coingecko.com/en/coins/donut) on " + date.strftime("%Y %b %d at %H:%M") + " UTC was " + str(supply) + "\n" + "\n" + "*I am a bot, and this was performed automatically as a record of the total donut supply at governance polls.*")
+          print("[Total Donut Supply](https://www.coingecko.com/en/coins/donut) on " + date.strftime("%Y %b %d at %H:%M") + " UTC was " + str(supply) + "\n" + "\n" + "*I am a bot, and this was performed automatically as a record of the total donut supply at each governance polls.*")
+          # submission.reply("[Total Donut Supply](https://www.coingecko.com/en/coins/donut) on " + date.strftime("%Y %b %d at %H:%M") + " UTC was " + str(supply) + "\n" + "\n" + "*I am a bot, and this was performed automatically as a record of the total donut supply at each governance polls.*")
           self.tweet_poll(submission)
 
         else:

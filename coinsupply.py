@@ -7,12 +7,17 @@ def coinHistory():
 
     # api-endpoint 
     # https://www.coingecko.com/en/api#explore-api
-    coinJSON = 'https://api.coingecko.com/api/v3/coins/donut?market_data=true'
+    url = 'https://api.coingecko.com/api/v3/coins/donut?market_data=true'
 
-    coinJSON = requests.get(url = coinJSON)
-    coinJSON = coinJSON.json()
+    response = requests.get(url)
 
-    supply = coinJSON['market_data']['total_supply']
+    if response.status_code == 200:
+        coinJSON = response.json()
+
+        supply = coinJSON['market_data']['total_supply']
+
+    else:
+        supply = "ERROR"   
 
 
     return supply
