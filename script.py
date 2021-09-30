@@ -1,8 +1,11 @@
 import praw
 import os
 import tweepy
+import coinsupply as coin
+import datetime
 from dotenv import load_dotenv
-# from keep_alive import keep_alive
+
+
 
 load_dotenv()
 
@@ -53,12 +56,27 @@ class RedditBot:
         
       else:
         print(submission.id + ' - ' + submission.title)
-        prevPost.append(submission.id)
+        # prevPost.append(submission.id)
         # submission.crosspost(subreddit=destination, send_replies=False)
-        self.tweet_post(submission)
+        self.comment_supply(submission)
+    
+    def comment_supply(self, submission):
+        if keywords[0] in clean_string(submission.title):
+          date = datetime.datetime.utcnow()
+          supply = coin.coinHistory()
+          print("[Total Donut Supply](https://www.coingecko.com/en/coins/donut) on " + date.strftime("%Y %b %d at %H:%M") + " UTC was " + str(supply) + "\n" + "\n" + "*I am a bot, and this was performed automatically as a record of the total donut supply at governance polls.*")
+          # submission.reply("[Total Donut Supply](https://www.coingecko.com/en/coins/donut) on " + date.strftime("%Y %b %d at %H:%M") + " UTC was " + str(supply) + "\n" + "\n" + "*I am a bot, and this was performed automatically as a record of the total donut supply at governance polls.*")
+          self.tweet_poll(submission)
 
-    def tweet_post(self,submission):
+        else:
+          self.tweet_proposal(submission)
+
+    def tweet_poll(self,submission):
         print("Beep boop! New r/Ethtrader Governance Poll: " + "\n" +  "https://redd.it/" + submission.id)
+        # api.update_status("Beep boop! New r/Ethtrader Governance Poll: " + "\n" +  "https://redd.it/" + submission.id)
+
+    def tweet_proposal(self,submission):
+        print("Beep boop! New r/Ethtrader Poll Proposal: " + "\n" +  "https://redd.it/" + submission.id)
         # api.update_status("Beep boop! New r/Ethtrader Governance Poll: " + "\n" +  "https://redd.it/" + submission.id)
 
 # keep_alive()
