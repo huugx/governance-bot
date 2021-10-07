@@ -1,6 +1,7 @@
 import praw
 import os
 import tweepy
+import time
 import coinsupply as coin
 import datetime
 from dotenv import load_dotenv
@@ -64,8 +65,8 @@ class RedditBot:
         if keywords[0] in clean_string(submission.title):
           date = datetime.datetime.utcnow()
           supply = coin.coinHistory()
-          print("[Total Donut Supply](https://www.coingecko.com/en/coins/donut) on " + date.strftime("%Y %b %d at %H:%M") + " UTC was " + str(supply) + "\n" + "\n" + "*I am a bot, and this was performed automatically as a record of the total donut supply at each governance polls.*")
-          # submission.reply("[Total Donut Supply](https://www.coingecko.com/en/coins/donut) on " + date.strftime("%Y %b %d at %H:%M") + " UTC was " + str(supply) + "\n" + "\n" + "*I am a bot, and this was performed automatically as a record of the total donut supply at each governance polls.*")
+          print("[Total Donut Supply](https://www.coingecko.com/en/coins/donut) on " + date.strftime("%Y %b %d at %H:%M") + " UTC was " + str(supply) + "\n" + "\n" + "*I am a bot, and this was performed automatically to provide a record of the total donut supply at each governance poll.*")
+          # submission.reply("[Total Donut Supply](https://www.coingecko.com/en/coins/donut) on " + date.strftime("%Y %b %d at %H:%M") + " UTC was " + str(supply) + "\n" + "\n" + "*I am a bot, and this was performed automatically as a record of the total donut supply at each governance poll.*")
           self.tweet_poll(submission)
 
         else:
@@ -79,7 +80,17 @@ class RedditBot:
         print("Beep boop! New r/Ethtrader Poll Proposal: " + "\n" +  "https://redd.it/" + submission.id)
         # api.update_status("Beep boop! New r/Ethtrader Governance Poll: " + "\n" +  "https://redd.it/" + submission.id)
 
-# keep_alive()
+
 bot = RedditBot()
-for submission in subreddit.stream.submissions(skip_existing=True):
-    bot.find_match(submission)
+running = True
+while running:
+  try:
+    print("u/DonutGovernanceBot reporting for duty!")
+    for submission in subreddit.stream.submissions(skip_existing=True):
+      bot.find_match(submission)
+  except KeyboardInterrupt:
+    running = False
+  except Exception:
+    print("Taking a breather...")
+    time.sleep(30)
+      
