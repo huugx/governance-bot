@@ -36,19 +36,19 @@ reddit = praw.Reddit(
 discord_distribution = str(os.getenv('discord_distribution'))
 discord_improvements = str(os.getenv('discord_improvements'))
 
-webhookDistribution = Webhook.from_url("https://discord.com/api/webhooks/906198656368128071/" + discord_distribution, adapter=RequestsWebhookAdapter())
-webhookImprovements= Webhook.from_url("https://discord.com/api/webhooks/906200291471421491/" + discord_improvements , adapter=RequestsWebhookAdapter())
+webhookDistribution = Webhook.from_url(discord_distribution, adapter=RequestsWebhookAdapter())
+webhookImprovements = Webhook.from_url(discord_improvements , adapter=RequestsWebhookAdapter())
 
 subreddit = reddit.subreddit('ethtrader')
-keywords = '[governance poll]', '[poll proposal]','[donut initiative]'
-user = 'CommunityPoints'
+keywords = '[governance poll]', '[poll proposal]', '[governance proposal]', '[donut initiative]'
+keyUser = 'CommunityPoints'
 destination = 'u_DonutGovernanceBot'
 prevPost = []
 
 # Debug
 # subreddit = reddit.subreddit('all')
 # keywords = 'dog', 'friend', 'win', 'tomorrow'
-# user = 'go'
+# keyUser = 'go'
 
 def clean_string(raw_string):
     cleaned_string = raw_string.lower()
@@ -60,7 +60,7 @@ class RedditBot:
             if key in clean_string(submission.title):
               self.make_post(submission)
 
-        if user in str(submission.author):
+        if keyUser in str(submission.author):
           self.make_post(submission)
 
 
@@ -88,6 +88,9 @@ class RedditBot:
         elif keywords[2] in clean_string(submission.title):
           self.tweet_initiative(submission)
 
+        elif keywords[3] in clean_string(submission.title):
+          self.tweet_initiative(submission)  
+
         else:
           self.tweet_distribution(submission)
           
@@ -95,24 +98,24 @@ class RedditBot:
     def tweet_poll(self,submission):
         print("Beep boop! New r/Ethtrader Governance Poll: " + "\n" +  "https://redd.it/" + submission.id)
         api.update_status("Beep boop! New r/Ethtrader Governance Poll: " + "\n" +  "https://redd.it/" + submission.id)
-        webhookImprovements.send("Beep boop! New r/Ethtrader Governance Poll: " + "\n" +  "https://redd.it/" + submission.id)
+        webhookImprovements.send("@everyone New r/Ethtrader Governance Poll: " + "\n" +  "https://redd.it/" + submission.id)
         
 
     def tweet_proposal(self,submission):
         print("Beep boop! New r/Ethtrader Poll Proposal: " + "\n" +  "https://redd.it/" + submission.id)
         api.update_status("Beep boop! New r/Ethtrader Poll Proposal: " + "\n" +  "https://redd.it/" + submission.id)
-        webhookImprovements.send("Beep boop! New r/Ethtrader Poll Proposal: " + "\n" +  "https://redd.it/" + submission.id)
+        webhookImprovements.send("@everyone New r/Ethtrader Poll Proposal: " + "\n" +  "https://redd.it/" + submission.id)
         
 
     def tweet_initiative(self,submission):
         print("Beep boop! New r/Ethtrader Donut Initiative: " + "\n" +  "https://redd.it/" + submission.id)
         api.update_status("Beep boop! New r/Ethtrader Donut Initiative: " + "\n" +  "https://redd.it/" + submission.id)
-        webhookImprovements.send("Beep boop! New r/Ethtrader Donut Initiative: " + "\n" +  "https://redd.it/" + submission.id)
+        webhookImprovements.send("@everyone New r/Ethtrader Donut Initiative: " + "\n" +  "https://redd.it/" + submission.id)
 
     def tweet_distribution(self, submission):
         print("Beep boop! New r/Ethtrader Donut Distribution: " + "\n" +  "https://redd.it/" + submission.id)
         api.update_status("Beep boop! New r/Ethtrader Donut Distribution: " + "\n" +  "https://redd.it/" + submission.id)
-        webhookDistribution.send("Beep boop! New r/Ethtrader Donut Distribution: " + "\n" +  "https://redd.it/" + submission.id)
+        webhookDistribution.send("@everyone New r/Ethtrader Donut Distribution: " + "\n" +  "https://redd.it/" + submission.id)
         
 bot = RedditBot()
 
